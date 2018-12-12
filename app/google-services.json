@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "292466658017",
+    "firebase_url": "https://nlshipper-74438.firebaseio.com",
+    "project_id": "nlshipper-74438",
+    "storage_bucket": "nlshipper-74438.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292466658017:android:e501a106e70ff85e",
+        "android_client_info": {
+          "package_name": "vn.nextlogix.shipper.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292466658017-i28tkuid4505ujebbvgnqqltss8l5np3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY90CBaopvx4043eyKJjmovFKUvVna7nE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
