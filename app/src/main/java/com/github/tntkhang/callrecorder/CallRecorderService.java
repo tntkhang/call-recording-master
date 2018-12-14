@@ -10,12 +10,12 @@ import android.widget.Toast;
 
 import com.github.tntkhang.utils.Constants;
 
-import khangtran.preferenceshelper.PreferencesHelper;
+import khangtran.preferenceshelper.PrefHelper;
 
 public class CallRecorderService extends Service {
 
     MediaRecorder recorder;
-    static final String TAGS = "com/github/tntkhang";
+    static final String TAGS = "tntkhang";
 
     private boolean isStartRecordSuccess = true;
     @Nullable
@@ -33,7 +33,7 @@ public class CallRecorderService extends Service {
         Log.d(TAGS, "Phone number in service: " + phoneNumber);
 
         String recordType = "";
-        int recordValue = PreferencesHelper.getInstance().getIntValue(Constants.RECORD_TYPE, 0);
+        int recordValue = PrefHelper.getIntVal(Constants.RECORD_TYPE, 0);
         switch(recordValue){
             case 0:
                 recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);

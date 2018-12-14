@@ -3,11 +3,10 @@ package com.github.tntkhang;
 import android.app.Application;
 
 import com.github.tntkhang.di.AppComponent;
+import com.github.tntkhang.di.DaggerAppComponent;
 import com.github.tntkhang.di.DatabaseModule;
 
-import khangtran.preferenceshelper.PreferencesHelper;
-import vn.nextlogix.tntkhang.di.DaggerAppComponent;
-
+import khangtran.preferenceshelper.PrefHelper;
 
 public class BaseApplication extends Application {
     AppComponent appComponent;
@@ -23,7 +22,7 @@ public class BaseApplication extends Application {
 
         INSTANCE = this;
         initializeDependencies();
-        PreferencesHelper.initHelper(this);
+        PrefHelper.initHelper(this);
 
     }
 

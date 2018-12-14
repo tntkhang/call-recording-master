@@ -6,16 +6,12 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.github.tntkhang.models.database.dao.CallDetailDAO;
-import com.github.tntkhang.models.database.dao.NotificationDAO;
 import com.github.tntkhang.models.database.entitiy.CallDetailEntity;
-import com.github.tntkhang.models.database.entitiy.NotificationEntity;
 
-@Database(entities = {NotificationEntity.class, CallDetailEntity.class}, version = 1)
+@Database(entities = {CallDetailEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
-
-    public abstract NotificationDAO notificationDao();
 
     public abstract CallDetailDAO callDetailDAO();
 

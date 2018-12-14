@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.STORAGE" />
 
     <application
-        android:name="vn.nextlogix.tntkhang.com.github.tntkhang.BaseApplication"
+        android:name="com.github.tntkhang.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,11 +28,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="vn.nextlogix.tntkhang.com.github.tntkhang.ui.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name="com.github.tntkhang.ui.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -44,17 +45,17 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <receiver android:name="vn.nextlogix.tntkhang.com.github.tntkhang.callrecorder.PhoneStateReceiver">
+        <receiver android:name="com.github.tntkhang.callrecorder.PhoneStateReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
 
-        <service android:name="vn.nextlogix.tntkhang.com.github.tntkhang.callrecorder.CallRecorderService" />
+        <service android:name="com.github.tntkhang.callrecorder.CallRecorderService" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="vn.nextlogix.tntkhang"
+            android:authorities="com.github.tntkhang.callrecorder"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

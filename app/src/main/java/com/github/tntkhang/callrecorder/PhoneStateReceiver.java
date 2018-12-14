@@ -14,7 +14,7 @@ import com.github.tntkhang.utils.Constants;
 
 import javax.inject.Inject;
 
-import khangtran.preferenceshelper.PreferencesHelper;
+import khangtran.preferenceshelper.PrefHelper;
 
 public class PhoneStateReceiver extends BroadcastReceiver {
 
@@ -33,9 +33,9 @@ public class PhoneStateReceiver extends BroadcastReceiver {
                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                 String recPath = startRecording(context, phoneNumber);
 
-                PreferencesHelper.getInstance().setValue(Constants.Prefs.CALL_RECORD_STARTED, !recPath.isEmpty());
+                PrefHelper.setVal(Constants.Prefs.CALL_RECORD_STARTED, !recPath.isEmpty());
             } else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-                if (PreferencesHelper.getInstance().getBooleanValue(Constants.Prefs.CALL_RECORD_STARTED, false)) {
+                if (PrefHelper.getBooleanVal(Constants.Prefs.CALL_RECORD_STARTED, false)) {
                     String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                     stopRecording(context, phoneNumber);
                 }
@@ -48,7 +48,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
     private String startRecording(Context context, String number) {
         String trimNumber = CommonMethods.removeSpaceInPhoneNo(number);
 
-        String time = CommonMethods.getTime();
+        String time = CommonMethods.getClearTime();
         String date = CommonMethods.getDate();
         String path = CommonMethods.getPath();
         String outputPath = path + "/" + trimNumber + "_" + time + ".mp3";
@@ -60,7 +60,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
         context.startService(recordService);
 
         String name = "";
-        int recordValue = PreferencesHelper.getInstance().getIntValue(Constants.RECORD_TYPE, 0);
+        int recordValue = PrefHelper.getIntVal(Constants.RECORD_TYPE, 0);
         switch(recordValue){
             case 0:
                 name = "AudioSource.DEFAULT";

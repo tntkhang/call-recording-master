@@ -49,14 +49,14 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
             Intent intent = new Intent(Intent.ACTION_VIEW);
             File file = new File(holder.mItem.getRecordPath());
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(getUriForFile(holder.mView.getContext(), "com/github/tntkhang",file), "audio/*");
+            intent.setDataAndType(getUriForFile(holder.mView.getContext(), "com.github.tntkhang.callrecorder",file), "audio/*");
             holder.mView.getContext().startActivity(intent);
         });
 
         holder.lnContainer.setOnLongClickListener(view -> {
             new AlertDialog.Builder(holder.mView.getContext())
                     .setIcon(ContextCompat.getDrawable(holder.mView.getContext(), R.drawable.ic_warning))
-                    .setMessage("Bạn muốn xóa file ghi âm này ?")
+                    .setMessage("Delete this file ?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                             File audioFile = new File(holder.mItem.getRecordPath());
                             if (audioFile.exists()) {
@@ -64,10 +64,10 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
                                     removeItem(holder.mItem);
                                     callDetailRepository.delete(holder.mItem);
                                 } else {
-                                    Toast.makeText(holder.mView.getContext(), "Xóa ko thành công", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(holder.mView.getContext(), "Delete fail", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(holder.mView.getContext(), "File ko tồn tại", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(holder.mView.getContext(), "File not exist", Toast.LENGTH_SHORT).show();
                             }
                     })
                     .setNegativeButton("No", null)
