@@ -89,7 +89,7 @@
             android:layout_marginRight="16dp"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:context=".ui.notification.NotificationFragment"
-            tools:listitem="@layout/fragment_notification_list_item" />
+            tools:listitem="@layout/item" />
     </LinearLayout>
 
 </ScrollView>

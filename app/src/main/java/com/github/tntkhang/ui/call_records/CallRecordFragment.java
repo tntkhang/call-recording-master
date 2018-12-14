@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -123,15 +125,6 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
     @OnClick(R.id.check_record_support)
     void onCheck() {
-
-    }
-
-    private void checkRecord() {
-        MediaRecorder recorder = new MediaRecorder();
-        recorder.reset();
-
-        String outputPath = getContext().getCacheDir().getPath();
-
         String recordType = "";
         int recordValue = PreferencesHelper.getInstance().getIntValue(Constants.RECORD_TYPE, 0);
         switch(recordValue){
@@ -153,6 +146,38 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
                 break;
         }
 
+        for (int i = 0; i < 4; i++) {
+
+        }
+    }
+
+    private MediaRecorder checkRecord(int method) {
+        MediaRecorder recorder = new MediaRecorder();
+        recorder.reset();
+
+        String outputPath = getContext().getCacheDir().getPath();
+
+        String recordType = "";
+        int recordValue = PreferencesHelper.getInstance().getIntValue(Constants.RECORD_TYPE, 0);
+        switch(recordValue){
+            case 0:
+                recordType = "DEFAULT";
+                break;
+            case 1:
+                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                recordType = "MIC";
+                break;
+            case 2:
+                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
+                recordType = "VOICE_CALL";
+                break;
+            case 3:
+                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+                recordType = "VOICE_COMMUNICATION";
+                break;
+        }
+
+        recorder.setAudioSource(method);
         recorder.setAudioSamplingRate(44100);
         recorder.setAudioEncodingBitRate(96000);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
@@ -164,9 +189,46 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
             recorder.prepare();
             recorder.start();
         } catch (Exception e) {
-            isStartRecordSuccess = false;
+            isCanRecord = false;
             e.printStackTrace();
         }
+
+        return recorder;
+    }
+
+    private MediaRecorder startChecking(int method) {
+        CountDownTimer countDownTimer = new CountDownTimer(1000, 1000) {
+
+            MediaRecorder recorder;
+
+            @Override
+            public void onTick(long l) {
+                recorder = checkRecord(method);
+            }
+
+            @Override
+            public void onFinish() {
+                stopChecking(recorder);
+            }
+        }
+        return checkRecord(method);
+    }
+
+    private boolean stopChecking(MediaRecorder recoder) {
+        boolean result = true;
+        if (recoder != null) {
+            try {
+                recoder.stop();
+                recoder.reset();
+                recoder.release();
+                recoder = null;
+
+                result = true;
+            } catch (Exception e) {
+                result = false;
+            }
+        }
+        return result;
     }
 
 
