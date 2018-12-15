@@ -28,7 +28,6 @@ import com.github.tntkhang.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
@@ -48,6 +47,8 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
     @BindView(R.id.phone_no)
     EditText phoneNo;
+    @BindView(R.id.phone_no_auto_detect)
+    EditText phoneNoAutoDetect;
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
 
@@ -252,8 +253,18 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
     @OnClick(R.id.btn_call)
     void onCallClick() {
         PrefHelper.setVal(Constants.PHONE_NUMBER_TO_RECORD, phoneNo.getText().toString());
+        PrefHelper.setVal(Constants.AUTO_DETECT_SUPPORT_TYPE, false);
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNo.getText().toString()));
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_call2)
+    void onCall2Click() {
+        PrefHelper.setVal(Constants.PHONE_NUMBER_TO_RECORD, phoneNoAutoDetect.getText().toString());
+        PrefHelper.setVal(Constants.AUTO_DETECT_SUPPORT_TYPE, true);
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNoAutoDetect.getText().toString()));
         startActivity(intent);
     }
 

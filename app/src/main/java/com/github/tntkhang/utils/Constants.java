@@ -2,6 +2,7 @@ package com.github.tntkhang.utils;
 
 public class Constants {
 
+    public static final String AUTO_DETECT_SUPPORT_TYPE = "AUTO_DETECT_SUPPORT_TYPE";
     public static String PARCELABLE_OFFICES = "PARCELABLE_OFFICES";
     public static String PHONE_NUMBER_TO_RECORD = "PHONE_NUMBER_TO_RECORD";
     public static String RECORD_TYPE = "RECORD_TYPE";

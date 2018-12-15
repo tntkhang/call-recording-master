@@ -3,6 +3,7 @@ package com.github.tntkhang.callrecorder;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -32,25 +33,31 @@ public class CallRecorderService extends Service {
         String outputPath = intent.getStringExtra(Constants.CALL_RECORD_PATH);
         Log.d(TAGS, "Phone number in service: " + phoneNumber);
 
-        String recordType = "";
-        int recordValue = PrefHelper.getIntVal(Constants.RECORD_TYPE, 0);
-        switch(recordValue){
-            case 0:
-                recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-                recordType = "DEFAULT";
-                break;
-            case 1:
-                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                recordType = "MIC";
-                break;
-            case 2:
+        boolean isAutoDetect = PrefHelper.getBooleanVal(Constants.PHONE_NUMBER_TO_RECORD, false);
+        if (isAutoDetect) {
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-                recordType = "VOICE_CALL";
-                break;
-            case 3:
+            } else if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            } else {
                 recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                recordType = "VOICE_COMMUNICATION";
-                break;
+            }
+        } else {
+            int recordValue = PrefHelper.getIntVal(Constants.RECORD_TYPE, 0);
+            switch(recordValue){
+                case 0:
+                    recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+                    break;
+                case 1:
+                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    break;
+                case 2:
+                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
+                    break;
+                case 3:
+                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+                    break;
+            }
         }
 
         recorder.setAudioSamplingRate(44100);
