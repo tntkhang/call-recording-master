@@ -16,41 +16,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <RadioGroup
+            <LinearLayout
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/rdDefault"
+                <TextView
+                    android:id="@+id/tv_default"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:enabled="false"
+                    android:textStyle="bold"
                     android:text="DEFAULT" />
-                <RadioButton
-                    android:id="@+id/rdMic"
+                <TextView
+                    android:id="@+id/tv_mic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:enabled="false"
+                    android:textStyle="bold"
                     android:text="MIC" />
-                <RadioButton
-                    android:id="@+id/rdVoiceCall"
+                <TextView
+                    android:id="@+id/tv_voice_call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:enabled="false"
+                    android:textStyle="bold"
                     android:text="VOICE_CALL" />
-                <RadioButton
-                    android:id="@+id/rdVoiceCom"
+                <TextView
+                    android:id="@+id/tv_voice_comm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:enabled="false"
+                    android:textStyle="bold"
                     android:text="VOICE_COMMUNICATION" />
-            </RadioGroup>
+            </LinearLayout>
             <Button
                 android:id="@+id/check_record_support"
                 android:layout_width="wrap_content"
@@ -59,7 +55,7 @@
                 android:focusable="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toEndOf="@id/radioGroup"
+                android:layout_alignParentEnd="true"
                 android:text="Check support method"/>
         </RelativeLayout>
         <View
@@ -80,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:textColor="@android:color/black"
-                android:text="Select AudioSource supported above and make a call to record."/>
+                android:text="Recording with:"/>
             <EditText
                 android:id="@+id/phone_no"
                 android:layout_width="match_parent"
@@ -97,43 +93,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_below="@+id/tv_explain"
-                android:text="CALL"/>
-
-        </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_explain2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:textColor="@android:color/black"
-                android:text="Call by auto detect AudioSource"/>
-            <EditText
-                android:id="@+id/phone_no_auto_detect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/btn_call2"
-                android:inputType="phone"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/tv_explain2"
-                android:hint="+84123456789"/>
-            <Button
-                android:id="@+id/btn_call2"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/tv_explain2"
                 android:text="CALL"/>
 
         </RelativeLayout>

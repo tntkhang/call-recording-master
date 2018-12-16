@@ -54,27 +54,12 @@ public class PhoneStateReceiver extends BroadcastReceiver {
         String outputPath = path + "/" + trimNumber + "_" + time + ".mp3";
 
         Intent recordService = new Intent(context, CallRecorderService.class);
-        recordService.putExtra(Constants.PHONE_CALL_NUMBER, trimNumber);
-        recordService.putExtra(Constants.CALL_RECORD_PATH, outputPath);
+        recordService.putExtra(Constants.Prefs.PHONE_CALL_NUMBER, trimNumber);
+        recordService.putExtra(Constants.Prefs.CALL_RECORD_PATH, outputPath);
 
         context.startService(recordService);
 
         String name = "";
-        int recordValue = PrefHelper.getIntVal(Constants.RECORD_TYPE, 0);
-        switch(recordValue){
-            case 0:
-                name = "AudioSource.DEFAULT";
-                break;
-            case 1:
-                name = "AudioSource.MIC";
-                break;
-            case 2:
-                name = "AudioSource.VOICE_CALL";
-                break;
-            case 3:
-                name = "AudioSource.VOICE_COMMUNICATION";
-                break;
-        }
         CallDetailEntity callDetailEntity = new CallDetailEntity(trimNumber, name, time, date, outputPath);
         callDetailRepository.insert(callDetailEntity);
         return outputPath;

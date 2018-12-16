@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
@@ -17,8 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.tntkhang.models.database.entitiy.CallDetailEntity;
@@ -47,22 +47,21 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
     @BindView(R.id.phone_no)
     EditText phoneNo;
-    @BindView(R.id.phone_no_auto_detect)
-    EditText phoneNoAutoDetect;
-    @BindView(R.id.radioGroup)
-    RadioGroup radioGroup;
 
-    @BindView(R.id.rdDefault)
-    RadioButton rdDefault;
+    @BindView(R.id.tv_default)
+    TextView tvDefault;
 
-    @BindView(R.id.rdMic)
-    RadioButton rdMic;
+    @BindView(R.id.tv_mic)
+    TextView tvMic;
 
-    @BindView(R.id.rdVoiceCall)
-    RadioButton rdVoiceCall;
+    @BindView(R.id.tv_voice_call)
+    TextView tvVoiceCall;
 
-    @BindView(R.id.rdVoiceCom)
-    RadioButton rdVoiceComm;
+    @BindView(R.id.tv_voice_comm)
+    TextView tvVoiceComm;
+
+    @BindView(R.id.tv_explain)
+    TextView tvExplain;
 
     List<CallDetailEntity> callDetailEntities;
     CallRecordAdapter mAdapter;
@@ -104,26 +103,6 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
         recyclerView.setAdapter(mAdapter);
         callRecordPresenter.getAll();
 
-        radioGroup.setOnCheckedChangeListener((radioGroup1, i) ->  {
-            int recordValue = 0;
-            switch(i){
-                case R.id.rdDefault:
-                    recordValue = 0;
-                    break;
-                case R.id.rdMic:
-                    recordValue = 1;
-                    break;
-                case R.id.rdVoiceCall:
-                    recordValue = 2;
-                    break;
-                case R.id.rdVoiceCom:
-                    recordValue = 3;
-                    break;
-            }
-
-            PrefHelper.setVal(Constants.RECORD_TYPE, recordValue);
-        });
-
         return view;
     }
 
@@ -141,14 +120,10 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
     @OnClick(R.id.check_record_support)
     void onCheck() {
-        rdDefault.setEnabled(false);
-        rdDefault.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
-        rdMic.setEnabled(false);
-        rdMic.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
-        rdVoiceCall.setEnabled(false);
-        rdVoiceCall.setTextColor(ContextCompat.getColor(getContext(),  android.R.color.black));
-        rdVoiceComm.setEnabled(false);
-        rdVoiceComm.setTextColor(ContextCompat.getColor(getContext(),  android.R.color.black));
+        tvDefault.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
+        tvMic.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
+        tvVoiceCall.setTextColor(ContextCompat.getColor(getContext(),  android.R.color.black));
+        tvVoiceComm.setTextColor(ContextCompat.getColor(getContext(),  android.R.color.black));
 
         checkRecord(MediaRecorder.AudioSource.DEFAULT);
     }
@@ -192,20 +167,16 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
                 switch (method) {
                     case MediaRecorder.AudioSource.DEFAULT:
-                        rdDefault.setEnabled(canRecord);
-                        rdDefault.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
+                        tvDefault.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                     case MediaRecorder.AudioSource.MIC:
-                        rdMic.setEnabled(canRecord);
-                        rdMic.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
+                        tvMic.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                     case MediaRecorder.AudioSource.VOICE_CALL:
-                        rdVoiceCall.setEnabled(canRecord);
-                        rdVoiceCall.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
+                        tvVoiceCall.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                     case MediaRecorder.AudioSource.VOICE_COMMUNICATION:
-                        rdVoiceComm.setEnabled(canRecord);
-                        rdVoiceComm.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
+                        tvVoiceComm.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                 }
 
@@ -228,7 +199,18 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
                 break;
             case MediaRecorder.AudioSource.VOICE_COMMUNICATION:
                 Toast.makeText(getContext(), "Check Done", Toast.LENGTH_LONG).show();
+                tvExplain.setText("Recording with: " + setRecordMethod());
                 break;
+        }
+    }
+
+    private String setRecordMethod() {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return "MediaRecorder.AudioSource.VOICE_CALL";
+        } else if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return "MediaRecorder.AudioSource.MIC";
+        } else {
+            return "MediaRecorder.AudioSource.VOICE_COMMUNICATION";
         }
     }
 
@@ -252,19 +234,9 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
     @OnClick(R.id.btn_call)
     void onCallClick() {
-        PrefHelper.setVal(Constants.PHONE_NUMBER_TO_RECORD, phoneNo.getText().toString());
-        PrefHelper.setVal(Constants.AUTO_DETECT_SUPPORT_TYPE, false);
+        PrefHelper.setVal(Constants.Prefs.PHONE_NUMBER_TO_RECORD, phoneNo.getText().toString());
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNo.getText().toString()));
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.btn_call2)
-    void onCall2Click() {
-        PrefHelper.setVal(Constants.PHONE_NUMBER_TO_RECORD, phoneNoAutoDetect.getText().toString());
-        PrefHelper.setVal(Constants.AUTO_DETECT_SUPPORT_TYPE, true);
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + phoneNoAutoDetect.getText().toString()));
         startActivity(intent);
     }
 

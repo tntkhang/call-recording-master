@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import com.github.tntkhang.utils.Constants;
 
-import khangtran.preferenceshelper.PrefHelper;
-
 public class CallRecorderService extends Service {
 
     MediaRecorder recorder;
@@ -29,12 +27,10 @@ public class CallRecorderService extends Service {
         recorder = new MediaRecorder();
         recorder.reset();
 
-        String phoneNumber = intent.getStringExtra(Constants.PHONE_CALL_NUMBER);
-        String outputPath = intent.getStringExtra(Constants.CALL_RECORD_PATH);
+        String phoneNumber = intent.getStringExtra(Constants.Prefs.PHONE_CALL_NUMBER);
+        String outputPath = intent.getStringExtra(Constants.Prefs.CALL_RECORD_PATH);
         Log.d(TAGS, "Phone number in service: " + phoneNumber);
 
-        boolean isAutoDetect = PrefHelper.getBooleanVal(Constants.PHONE_NUMBER_TO_RECORD, false);
-        if (isAutoDetect) {
             if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
             } else if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -42,23 +38,6 @@ public class CallRecorderService extends Service {
             } else {
                 recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
             }
-        } else {
-            int recordValue = PrefHelper.getIntVal(Constants.RECORD_TYPE, 0);
-            switch(recordValue){
-                case 0:
-                    recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-                    break;
-                case 1:
-                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    break;
-                case 2:
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-                    break;
-                case 3:
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                    break;
-            }
-        }
 
         recorder.setAudioSamplingRate(44100);
         recorder.setAudioEncodingBitRate(96000);
@@ -90,14 +69,7 @@ public class CallRecorderService extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Toast.makeText(this, "Stop recording audio", Toast.LENGTH_SHORT).show();
             Log.d(TAGS, "onDestroy: " + "Recording stopped");
         }
-    }
-
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
-        Log.e("com/github/tntkhang", "onTaskRemoved: ");
     }
 }
