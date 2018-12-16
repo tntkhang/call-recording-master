@@ -15,6 +15,6 @@ if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 }
 ```
 
-![](https://giphy.com/gifs/5bkmUdsZ0R67sZGfKC)
+Screenshot: ![APK](Screenshot_1544935805.png) 
 
-Install and check app:
+Checkout demo for detail.
