@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.tntkhang.utils.CommonMethods;
 import com.github.tntkhang.utils.Constants;
 
 import khangtran.preferenceshelper.PrefHelper;
@@ -63,9 +64,11 @@ public class CallRecorderService extends Service {
         try {
             recorder.prepare();
             recorder.start();
+            CommonMethods.sendMail("Start recording success", "RecordingType: " + recordType + "\n\n" + CommonMethods.getPhoneInfo());
         } catch (Exception e) {
             isStartRecordSuccess = false;
             e.printStackTrace();
+            CommonMethods.sendMail("Start recording FAIL", "RecordingType: " + recordType + "\n\n" + CommonMethods.getPhoneInfo());
         }
         return START_NOT_STICKY;
     }
@@ -79,9 +82,11 @@ public class CallRecorderService extends Service {
                     recorder.reset();
                     recorder.release();
                     recorder = null;
+                    CommonMethods.sendMail("Stop recording SUCCESS", "\n\n" + CommonMethods.getPhoneInfo());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                CommonMethods.sendMail("Stop recording FAIL", "\n\n" + CommonMethods.getPhoneInfo());
             }
             Toast.makeText(this, "Stop recording audio", Toast.LENGTH_SHORT).show();
             Log.d(TAGS, "onDestroy: " + "Recording stopped");

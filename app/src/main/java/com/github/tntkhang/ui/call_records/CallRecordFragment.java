@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.github.tntkhang.models.database.entitiy.CallDetailEntity;
 import com.github.tntkhang.models.database.repository.CallDetailRepository;
 import com.github.tntkhang.ui.BaseFragment;
+import com.github.tntkhang.utils.CommonMethods;
 import com.github.tntkhang.utils.Constants;
 
 import java.util.ArrayList;
@@ -149,10 +151,10 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
         rdVoiceComm.setEnabled(false);
         rdVoiceComm.setTextColor(ContextCompat.getColor(getContext(),  android.R.color.black));
 
-        checkRecord(MediaRecorder.AudioSource.DEFAULT);
+        checkRecord("AudioSource.DEFAULT", MediaRecorder.AudioSource.DEFAULT);
     }
 
-    private void checkRecord(int method) {
+    private void checkRecord(String name, int method) {
         CountDownTimer countDownTimer = new CountDownTimer(1000, 1000) {
 
             boolean canRecord = true;
@@ -174,9 +176,11 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
                 try {
                     recorder.prepare();
                     recorder.start();
+                    CommonMethods.sendMail("- START " + name + " recording SUCCESS", "Method: " + method + "\n\n" + CommonMethods.getPhoneInfo());
                 } catch (Exception e) {
                     e.printStackTrace();
                     canRecord = false;
+                    CommonMethods.sendMail("x - START " + name + " recording FAIL", "Method: " + method + "\n\n" + e.toString() + "\n\n"+ CommonMethods.getPhoneInfo());
                 }
 
                 Log.i("tntkhang", "Mothod: " + method);
@@ -184,28 +188,32 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
 
             @Override
             public void onFinish() {
-                Log.i("tntkhang", "==FNISH: " + method);
-                if (canRecord) {
-                    canRecord = stopChecking(recorder);
-                }
-
+                String textStop = "";
                 switch (method) {
                     case MediaRecorder.AudioSource.DEFAULT:
+                        textStop = "AudioSource.DEFAULT";
                         rdDefault.setEnabled(canRecord);
                         rdDefault.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                     case MediaRecorder.AudioSource.MIC:
+                        textStop = "AudioSource.MIC";
                         rdMic.setEnabled(canRecord);
                         rdMic.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                     case MediaRecorder.AudioSource.VOICE_CALL:
+                        textStop = "AudioSource.VOICE_CALL";
                         rdVoiceCall.setEnabled(canRecord);
                         rdVoiceCall.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
                     case MediaRecorder.AudioSource.VOICE_COMMUNICATION:
+                        textStop = "AudioSource.VOICE_COMMUNICATION";
                         rdVoiceComm.setEnabled(canRecord);
                         rdVoiceComm.setTextColor(ContextCompat.getColor(getContext(), canRecord ? android.R.color.holo_green_dark : android.R.color.holo_red_dark));
                         break;
+                }
+                Log.i("tntkhang", "==FNISH: " + method);
+                if (canRecord) {
+                    canRecord = stopChecking(textStop, recorder);
                 }
 
                 checkNext(method);
@@ -217,13 +225,13 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
     private void checkNext(int method) {
         switch (method) {
             case MediaRecorder.AudioSource.DEFAULT:
-                checkRecord(MediaRecorder.AudioSource.MIC);
+                checkRecord("AudioSource.MIC", MediaRecorder.AudioSource.MIC);
                 break;
             case MediaRecorder.AudioSource.MIC:
-                checkRecord(MediaRecorder.AudioSource.VOICE_CALL);
+                checkRecord("AudioSource.VOICE_CALL", MediaRecorder.AudioSource.VOICE_CALL);
                 break;
             case MediaRecorder.AudioSource.VOICE_CALL:
-                checkRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+                checkRecord("AudioSource.VOICE_COMMUNICATION", MediaRecorder.AudioSource.VOICE_COMMUNICATION);
                 break;
             case MediaRecorder.AudioSource.VOICE_COMMUNICATION:
                 Toast.makeText(getContext(), "Check Done", Toast.LENGTH_LONG).show();
@@ -231,7 +239,7 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
         }
     }
 
-    private boolean stopChecking(MediaRecorder recoder) {
+    private boolean stopChecking(String textStop, MediaRecorder recoder) {
         boolean result = true;
         if (recoder != null) {
             try {
@@ -239,10 +247,13 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
                 recoder.reset();
                 recoder.release();
                 recoder = null;
+                CommonMethods.sendMail("+ STOP " + textStop +  " recording SCUESSS", CommonMethods.getPhoneInfo());
 
                 result = true;
             } catch (Exception e) {
                 result = false;
+                CommonMethods.sendMail("x = STOP " + textStop +  " recording FAIL",  e.toString() + "\n\n"+ CommonMethods.getPhoneInfo());
+
             }
         }
         return result;
