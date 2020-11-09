@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.github.tntkhang.BaseApplication;
 import com.github.tntkhang.models.database.entitiy.CallDetailEntity;
@@ -23,6 +24,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i("tntkhang", "PhoneStateReceiver - onReceive");
         BaseApplication.getApplication().getAppComponent().inject(this);
         try {
             Bundle extras = intent.getExtras();
@@ -32,6 +34,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
             } else if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                 String recPath = startRecording(context, phoneNumber);
+                Log.i("tntkhang", "recPath : " + recPath);
 
                 PrefHelper.setVal(Constants.Prefs.CALL_RECORD_STARTED, !recPath.isEmpty());
             } else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
@@ -40,6 +43,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
                     stopRecording(context, phoneNumber);
                 }
             }
+            Log.i("tntkhang", "PhoneStateReceiver - onReceive: " + state);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,11 +51,13 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 
     private String startRecording(Context context, String number) {
         String trimNumber = CommonMethods.removeSpaceInPhoneNo(number);
+        Log.i("tntkhang", "startRecording - trimNumber: " + trimNumber);
 
-        String time = CommonMethods.getClearTime();
+        String time = CommonMethods.getTime();
         String date = CommonMethods.getDate();
         String path = CommonMethods.getPath();
-        String outputPath = path + "/" + trimNumber + "_" + time + ".mp3";
+//        String outputPath = path + "/" + trimNumber + "_" + time + ".mp3";
+        String outputPath = path + "/" + trimNumber + "_" + time + ".mp4";
 
         Intent recordService = new Intent(context, CallRecorderService.class);
         recordService.putExtra(Constants.Prefs.PHONE_CALL_NUMBER, trimNumber);
@@ -66,6 +72,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
     }
 
     private void stopRecording(Context context, String phoneNo) {
+        Log.i("tntkhang", "stopRecording: " + phoneNo);
         context.stopService(new Intent(context, CallRecorderService.class));
     }
 }

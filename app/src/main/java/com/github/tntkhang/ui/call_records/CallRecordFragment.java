@@ -199,9 +199,9 @@ public class CallRecordFragment extends BaseFragment implements SwipeRefreshLayo
                 break;
             case MediaRecorder.AudioSource.VOICE_COMMUNICATION:
                 Toast.makeText(getContext(), "Check Done", Toast.LENGTH_LONG).show();
-                tvExplain.setText("Recording with: " + setRecordMethod());
                 break;
         }
+        tvExplain.setText("Recording with: " + setRecordMethod());
     }
 
     private String setRecordMethod() {

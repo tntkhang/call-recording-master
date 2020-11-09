@@ -31,18 +31,31 @@ public class CallRecorderService extends Service {
         String outputPath = intent.getStringExtra(Constants.Prefs.CALL_RECORD_PATH);
         Log.d(TAGS, "Phone number in service: " + phoneNumber);
 
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-            } else if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            } else {
-                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-            }
+//            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
+//            } else if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+//                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//            } else {
+//                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+//            }
 
         recorder.setAudioSamplingRate(44100);
         recorder.setAudioEncodingBitRate(96000);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+
+
+//        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+//        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+//        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+
+//        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
         recorder.setOutputFile(outputPath);
 
