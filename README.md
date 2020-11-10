@@ -15,7 +15,7 @@ if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 }
 ```
 
-### Example APK: ![APK](app-debug.apk) 
+### Example APK: [app-debug.apk](app-debug.apk) 
 
 ### Screenshot: ![APK](Screenshot_1544935805.png) 
 
