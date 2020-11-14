@@ -43,9 +43,14 @@ public class CallRecorderService extends Service {
         recorder.setAudioEncodingBitRate(96000);
 
 
-        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
+//        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+//        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+//        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+//        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
 
 //        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);

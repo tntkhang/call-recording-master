@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Test Call Recording Support</string>
+    <string name="app_name">Call Recording</string>
+    <string name="accessibility_service_label">Call Recording Service</string>
 </resources>

@@ -50,6 +50,13 @@
 
         <service android:name="com.github.tntkhang.callrecorder.CallRecorderService" />
 
+        <service android:name="com.github.tntkhang.callrecorder.MyAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:label="@string/accessibility_service_label">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.github.tntkhang.callrecorder"

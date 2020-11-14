@@ -1,14 +1,23 @@
 package com.github.tntkhang.ui.main;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
+import com.github.tntkhang.callrecorder.CallRecorderService;
+import com.github.tntkhang.callrecorder.MyAccessibilityService;
 import com.github.tntkhang.ui.BaseActivity;
 import com.github.tntkhang.ui.call_records.CallRecordFragment;
+import com.github.tntkhang.utils.Constants;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -21,7 +30,7 @@ import butterknife.ButterKnife;
 import vn.nextlogix.tntkhang.R;
 
 public class MainActivity extends BaseActivity {
-
+    public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE= 2323;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +41,11 @@ public class MainActivity extends BaseActivity {
         Fragment recordFragment = CallRecordFragment.newInstance();
 
         replaceFragment(recordFragment);
+
+//
+//        Intent accessService = new Intent(this, MyAccessibilityService.class);
+//
+//        startService(accessService);
     }
 
     private void requestPermissions() {
