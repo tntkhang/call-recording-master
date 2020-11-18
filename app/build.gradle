@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
@@ -8,16 +7,12 @@ android {
     }
     compileSdkVersion 27
     defaultConfig {
-        applicationId "vn.nextlogix.shipper.test"
+        applicationId "com.github.tntkhang.callrecording"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        buildConfigField "int", "LIMIT", "100"
-        buildConfigField "String", "BASE_URL", "\"http://118.69.66.174/nextlogix/api/\""
-        buildConfigField "int", "CACHE_TIME", "432000" // 5days
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -87,5 +82,3 @@ dependencies {
 
     implementation 'com.github.tntkhang:gmail-sender-library:1.2.0'
 }
-
-apply plugin: 'com.google.gms.google-services'

@@ -15,6 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/radioGroup"
@@ -63,6 +64,7 @@
             android:layout_height="1dp"
             android:background="@color/colorPrimary"
             android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone"
             android:layout_marginBottom="@dimen/_10sdp"/>
 
         <RelativeLayout
@@ -76,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:textColor="@android:color/black"
-                android:text="Recording with:"/>
+                android:text="Type phone number to Call:"/>
             <EditText
                 android:id="@+id/phone_no"
                 android:layout_width="match_parent"

@@ -58,6 +58,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
         String path = CommonMethods.getPath();
         String outputPath = path + "/" + trimNumber + "_" + time + ".mp3";
 //        String outputPath = path + "/" + trimNumber + "_" + time + ".mp4";
+        Log.i("tntkhang", "outputPath: " + outputPath);
 
         Intent recordService = new Intent(context, CallRecorderService.class);
         recordService.putExtra(Constants.Prefs.PHONE_CALL_NUMBER, trimNumber);
